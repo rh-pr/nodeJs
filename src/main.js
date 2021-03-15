@@ -2,21 +2,19 @@
 
 const http = require('http');
 
-const hostname = '127.0.0.1';
-const port = 8000;
+const user = {
+    name: 'Marcus Aurelius',
+    city: 'Rome',
+    proffesion: 'emperor'
+};
 
 const server = http.createServer((req,res) => {
-    res.statusCode = 200;
-    res.setHeader('Content-Type','text/plain');
-    res.end('Hello World\n');
+    res.end(`${user.name} said "Java is a crap" and Chiao from ${user.city}`)
 });
 
-server.listen(port,hostname,() => {
-    console.log(`Server running at http://${hostname}:${port}/`);
+server.on('clientError', (err, socket) => {
+    socket.end('HTTP/1.1 400 Bad Request\r\n\r\n');
 });
 
-server.on('error', err => {
-    if (err.code === 'EACCES') {
-        console.log(`No access to port: ${port}`)
-    }
-});
+server.listen(8000);
+
